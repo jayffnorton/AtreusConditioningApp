@@ -1,0 +1,607 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		94A4F66B2E806B4900C7D906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66A2E806B4900C7D906 /* FirebaseAuth */; };
+		94A4F66D2E806B4900C7D906 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66C2E806B4900C7D906 /* FirebaseFirestore */; };
+		94A4F66F2E806B4900C7D906 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66E2E806B4900C7D906 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		946EC4F62E7B1C00002A3C41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 946EC4DD2E7B1BE4002A3C41 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 946EC4E42E7B1BE5002A3C41;
+			remoteInfo = "Atreus Conditioning";
+		};
+		946EC5002E7B1C00002A3C41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 946EC4DD2E7B1BE4002A3C41 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 946EC4E42E7B1BE5002A3C41;
+			remoteInfo = "Atreus Conditioning";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		946EC4E52E7B1BE5002A3C41 /* Atreus Conditioning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Atreus Conditioning.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		946EC4F52E7B1C00002A3C41 /* Atreus ConditioningTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atreus ConditioningTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		946EC4FF2E7B1C00002A3C41 /* Atreus ConditioningUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atreus ConditioningUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		946EC4F82E7B1C00002A3C41 /* Atreus ConditioningTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Atreus ConditioningTests";
+			sourceTree = "<group>";
+		};
+		946EC5022E7B1C00002A3C41 /* Atreus ConditioningUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Atreus ConditioningUITests";
+			sourceTree = "<group>";
+		};
+		94A4F65C2E80350000C7D906 /* Atreus Conditioning */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Atreus Conditioning";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		946EC4E22E7B1BE5002A3C41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94A4F66B2E806B4900C7D906 /* FirebaseAuth in Frameworks */,
+				94A4F66D2E806B4900C7D906 /* FirebaseFirestore in Frameworks */,
+				94A4F66F2E806B4900C7D906 /* FirebaseStorage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4F22E7B1C00002A3C41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4FC2E7B1C00002A3C41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		946EC4DC2E7B1BE4002A3C41 = {
+			isa = PBXGroup;
+			children = (
+				94A4F65C2E80350000C7D906 /* Atreus Conditioning */,
+				946EC4F82E7B1C00002A3C41 /* Atreus ConditioningTests */,
+				946EC5022E7B1C00002A3C41 /* Atreus ConditioningUITests */,
+				946EC4E62E7B1BE5002A3C41 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		946EC4E62E7B1BE5002A3C41 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				946EC4E52E7B1BE5002A3C41 /* Atreus Conditioning.app */,
+				946EC4F52E7B1C00002A3C41 /* Atreus ConditioningTests.xctest */,
+				946EC4FF2E7B1C00002A3C41 /* Atreus ConditioningUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		946EC4E42E7B1BE5002A3C41 /* Atreus Conditioning */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 946EC5092E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus Conditioning" */;
+			buildPhases = (
+				946EC4E12E7B1BE5002A3C41 /* Sources */,
+				946EC4E22E7B1BE5002A3C41 /* Frameworks */,
+				946EC4E32E7B1BE5002A3C41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				94A4F65C2E80350000C7D906 /* Atreus Conditioning */,
+			);
+			name = "Atreus Conditioning";
+			packageProductDependencies = (
+				94A4F66A2E806B4900C7D906 /* FirebaseAuth */,
+				94A4F66C2E806B4900C7D906 /* FirebaseFirestore */,
+				94A4F66E2E806B4900C7D906 /* FirebaseStorage */,
+			);
+			productName = "Atreus Conditioning";
+			productReference = 946EC4E52E7B1BE5002A3C41 /* Atreus Conditioning.app */;
+			productType = "com.apple.product-type.application";
+		};
+		946EC4F42E7B1C00002A3C41 /* Atreus ConditioningTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 946EC50C2E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus ConditioningTests" */;
+			buildPhases = (
+				946EC4F12E7B1C00002A3C41 /* Sources */,
+				946EC4F22E7B1C00002A3C41 /* Frameworks */,
+				946EC4F32E7B1C00002A3C41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				946EC4F72E7B1C00002A3C41 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				946EC4F82E7B1C00002A3C41 /* Atreus ConditioningTests */,
+			);
+			name = "Atreus ConditioningTests";
+			packageProductDependencies = (
+			);
+			productName = "Atreus ConditioningTests";
+			productReference = 946EC4F52E7B1C00002A3C41 /* Atreus ConditioningTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		946EC4FE2E7B1C00002A3C41 /* Atreus ConditioningUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 946EC50F2E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus ConditioningUITests" */;
+			buildPhases = (
+				946EC4FB2E7B1C00002A3C41 /* Sources */,
+				946EC4FC2E7B1C00002A3C41 /* Frameworks */,
+				946EC4FD2E7B1C00002A3C41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				946EC5012E7B1C00002A3C41 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				946EC5022E7B1C00002A3C41 /* Atreus ConditioningUITests */,
+			);
+			name = "Atreus ConditioningUITests";
+			packageProductDependencies = (
+			);
+			productName = "Atreus ConditioningUITests";
+			productReference = 946EC4FF2E7B1C00002A3C41 /* Atreus ConditioningUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		946EC4DD2E7B1BE4002A3C41 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					946EC4E42E7B1BE5002A3C41 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					946EC4F42E7B1C00002A3C41 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 946EC4E42E7B1BE5002A3C41;
+					};
+					946EC4FE2E7B1C00002A3C41 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 946EC4E42E7B1BE5002A3C41;
+					};
+				};
+			};
+			buildConfigurationList = 946EC4E02E7B1BE5002A3C41 /* Build configuration list for PBXProject "Atreus Conditioning" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 946EC4DC2E7B1BE4002A3C41;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				94A4F6692E806B4900C7D906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 946EC4E62E7B1BE5002A3C41 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				946EC4E42E7B1BE5002A3C41 /* Atreus Conditioning */,
+				946EC4F42E7B1C00002A3C41 /* Atreus ConditioningTests */,
+				946EC4FE2E7B1C00002A3C41 /* Atreus ConditioningUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		946EC4E32E7B1BE5002A3C41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4F32E7B1C00002A3C41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4FD2E7B1C00002A3C41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		946EC4E12E7B1BE5002A3C41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4F12E7B1C00002A3C41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		946EC4FB2E7B1C00002A3C41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		946EC4F72E7B1C00002A3C41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 946EC4E42E7B1BE5002A3C41 /* Atreus Conditioning */;
+			targetProxy = 946EC4F62E7B1C00002A3C41 /* PBXContainerItemProxy */;
+		};
+		946EC5012E7B1C00002A3C41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 946EC4E42E7B1BE5002A3C41 /* Atreus Conditioning */;
+			targetProxy = 946EC5002E7B1C00002A3C41 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		946EC5072E7B1C01002A3C41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		946EC5082E7B1C01002A3C41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		946EC50A2E7B1C01002A3C41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Atreus Conditioning/Preview Content\"";
+				DEVELOPMENT_TEAM = 3Q53F7X7RK;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Atreus Conditioning";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-Conditioning";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		946EC50B2E7B1C01002A3C41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Atreus Conditioning/Preview Content\"";
+				DEVELOPMENT_TEAM = 3Q53F7X7RK;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Atreus Conditioning";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-Conditioning";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		946EC50D2E7B1C01002A3C41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-ConditioningTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atreus Conditioning.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Atreus Conditioning";
+			};
+			name = Debug;
+		};
+		946EC50E2E7B1C01002A3C41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-ConditioningTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Atreus Conditioning.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Atreus Conditioning";
+			};
+			name = Release;
+		};
+		946EC5102E7B1C01002A3C41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-ConditioningUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Atreus Conditioning";
+			};
+			name = Debug;
+		};
+		946EC5112E7B1C01002A3C41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Atreus.Atreus-ConditioningUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Atreus Conditioning";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		946EC4E02E7B1BE5002A3C41 /* Build configuration list for PBXProject "Atreus Conditioning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				946EC5072E7B1C01002A3C41 /* Debug */,
+				946EC5082E7B1C01002A3C41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		946EC5092E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus Conditioning" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				946EC50A2E7B1C01002A3C41 /* Debug */,
+				946EC50B2E7B1C01002A3C41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		946EC50C2E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus ConditioningTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				946EC50D2E7B1C01002A3C41 /* Debug */,
+				946EC50E2E7B1C01002A3C41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		946EC50F2E7B1C01002A3C41 /* Build configuration list for PBXNativeTarget "Atreus ConditioningUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				946EC5102E7B1C01002A3C41 /* Debug */,
+				946EC5112E7B1C01002A3C41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		94A4F6692E806B4900C7D906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		94A4F66A2E806B4900C7D906 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94A4F6692E806B4900C7D906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		94A4F66C2E806B4900C7D906 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94A4F6692E806B4900C7D906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		94A4F66E2E806B4900C7D906 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94A4F6692E806B4900C7D906 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 946EC4DD2E7B1BE4002A3C41 /* Project object */;
+}
