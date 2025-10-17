@@ -23,7 +23,7 @@ struct account_view: View {
     
     var body: some View { //If logged in show user account, otherwise show login page
         if loggedInBool.isLoggedIn {
-            logged_in_view().environmentObject(loggedInBool)
+            logged_in_view(firebaseWorkouts: get_workouts()).environmentObject(loggedInBool)
         }
         else{
             login_view().environmentObject(loggedInBool)
@@ -39,6 +39,13 @@ struct logged_in_view: View{
      the property wrapper declaration.
      */
     @EnvironmentObject var loggedInBool: logged_in_bool
+    @State private var showingConfirmDelete = false
+    @Environment(\.dismiss) var dismiss
+    @State private var errorMessage: String?
+    @ObservedObject var firebaseWorkouts: get_workouts
+    @State private var jsonOutput: String = ""
+    @State private var showingShareSheet = false
+    @State private var exportURL: URL?
     
     var body: some View{
         VStack(spacing: 20) {
@@ -49,12 +56,10 @@ struct logged_in_view: View{
                 .padding(.bottom, 100)
                 .padding(.top, 20)
             
-            GIFView(gifName: "what-huh")
-            
             Text(UUID().uuidString)
                 .padding(.bottom, 100)
             
-            Button("Logout") {
+            Button {
                 do {
                     try Auth.auth().signOut()
                 } catch {
@@ -62,10 +67,93 @@ struct logged_in_view: View{
                 }
 
                 loggedInBool.isLoggedIn = false
+            } label: {
+                Text("Sign out")
+            }
+            
+            Button("Export Workouts as JSON") {
+                exportWorkouts()
+            }
+            .buttonStyle(.borderedProminent)
+            
+            ScrollView {
+                Text(jsonOutput)
+                    .font(.system(.body, design: .monospaced))
+                    .padding()
+                }
+
+            if let exportURL = exportURL {
+                ShareLink(item: exportURL, preview: SharePreview("workouts.json"))
+            }
+            
+            Button(role: .destructive) {
+                showingConfirmDelete = true
+            } label: {
+                Text("Delete Account")
+                    .bold()
+            }
+            .confirmationDialog("Are you sure?",
+                                isPresented: $showingConfirmDelete,
+                                titleVisibility: .visible) {
+                Button("Delete My Account", role: .destructive) {
+                    deleteAccount()
+                }
+                Button("Cancel", role: .cancel) {}
             }
         }
         .padding()
+        .onAppear {
+            firebaseWorkouts.fetchWorkouts()
+        }
     }
+    
+    func deleteAccount() {
+        guard let user = Auth.auth().currentUser else {
+            errorMessage = "No user is currently logged in."
+            return
+        }
+
+        let userId = user.uid
+        let db = Firestore.firestore()
+
+        // Step 1: Delete Firestore data
+        db.collection("users").document(userId).delete { error in
+            if let error = error {
+                errorMessage = "Error deleting user data: \(error.localizedDescription)"
+                return
+            }
+
+            // Step 2: Delete Authentication account
+            user.delete { error in
+                if let error = error {
+                    errorMessage = "Error deleting account: \(error.localizedDescription)"
+                } else {
+                    // Step 3: Optionally sign out and dismiss
+                    try? Auth.auth().signOut()
+                    dismiss()
+                }
+            }
+        }
+    }
+    
+    func exportWorkouts() {
+            let workouts = firebaseWorkouts.workouts
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+            encoder.dateEncodingStrategy = .iso8601
+
+            do {
+                let data = try encoder.encode(workouts.map{$0.asJSONSafe})
+                jsonOutput = String(data: data, encoding: .utf8) ?? "Encoding failed"
+
+                // Save to temporary file for sharing
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent("workouts.json")
+                try data.write(to: url)
+                exportURL = url
+            } catch {
+                jsonOutput = "Error encoding workouts: \(error.localizedDescription)"
+            }
+        }
 }
 
 struct login_view: View {
@@ -83,6 +171,7 @@ struct login_view: View {
      */
     @State private var email = ""
     @State private var password = ""
+    @State private var showingResetPassword: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -104,7 +193,7 @@ struct login_view: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(8)
             
-            Button("Login") {
+            Button {
                 Auth.auth().signIn(withEmail: email, password: password) { result, error in
                     if let error = error {
                         print("Login failed: \(error.localizedDescription)")
@@ -113,6 +202,14 @@ struct login_view: View {
                         loggedInBool.isLoggedIn = true
                     }
                 }
+            } label: {
+                Text("Login")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    .padding(.horizontal)
             }
             
             Button("Sign Up") {
@@ -138,10 +235,89 @@ struct login_view: View {
                         }
                     }
                 }
-                
             }
+            
+            Button {
+                showingResetPassword = true
+            } label: {
+                Text("Forgotten password?")
+                    
+            }
+            
+            Spacer()
+            
         }
         .padding()
+        .sheet(isPresented: $showingResetPassword) {
+            reset_password_view()// Replace with your real AddWorkoutView
+        }
+    }
+}
+
+struct reset_password_view: View {
+    @State private var email = ""
+    @State private var alertMessage = ""
+    @State private var showAlert = false
+    @FocusState private var isEmailFocused: Bool
+    
+    var body: some View {
+        VStack(spacing: 24) {
+            Text("Reset Password")
+                .font(.largeTitle.bold())
+                .padding(.top, 40)
+                .padding(.bottom, 60)
+            
+            TextField("Enter your email", text: $email)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(.emailAddress)
+                .autocapitalization(.none)
+                .padding(.horizontal)
+                .padding(.bottom, 30)
+                .focused($isEmailFocused)
+            
+            Button {
+                resetPassword()
+            } label: {
+                Text("Send Reset Link")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+            }
+            
+            Spacer()
+            
+            GIFView(gifName: "idiot-sandwich")
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Password Reset"),
+                  message: Text(alertMessage),
+                  dismissButton: .default(Text("OK")) {
+                      alertMessage = ""
+                  })
+        }
+        .onTapGesture {
+            isEmailFocused = false
+        }
+    }
+    
+    private func resetPassword() {
+        guard !email.isEmpty else {
+            alertMessage = "Please enter your email."
+            showAlert = true
+            return
+        }
+        
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                alertMessage = "Error: \(error.localizedDescription)"
+            } else {
+                alertMessage = "If an account exists for \(email), a reset link has been sent."
+            }
+            showAlert = true
+        }
     }
 }
 
@@ -153,7 +329,7 @@ class logged_in_bool: ObservableObject {
     Does not own the lifecycle (init, usage, deallocation) of the variable.
     Only used in classes.
     */
-    @Published var isLoggedIn = false
+    @Published var isLoggedIn: Bool = false
 
     init() {
         // This runs once when you create an instance

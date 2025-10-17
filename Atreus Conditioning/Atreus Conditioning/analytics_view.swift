@@ -34,9 +34,10 @@ struct analytics_view: View {
                         .padding(.bottom, 50)
                     impulse_chart_view(firebaseWorkouts: ownFirebaseWorkouts)
                         .padding(.bottom, 50)
-                    Text("Wall Sit Impulse").padding(.bottom, 50)
+                    Text("Tracked Metrics").padding(.bottom, 50)
                     exercise_chart_view(selectedExercise: "Wall Sit", firebaseWorkouts: ownFirebaseWorkouts)
                     Text("Seated Hamstring Curl Iso Impulse").padding(.bottom, 50)
+                    tracked_metrics_view()
                     exercise_chart_view(selectedExercise: "Seated Hamstring Curl Iso", firebaseWorkouts: ownFirebaseWorkouts)
                     Text("Single Leg Calf Raise Impulse").padding(.bottom, 50)
                     exercise_chart_view(selectedExercise: "Single Leg Calf Raise", firebaseWorkouts: ownFirebaseWorkouts)
@@ -54,18 +55,10 @@ struct analytics_view: View {
                 Color.black.ignoresSafeArea()
                 
                 VStack {
-                    Image("confused_john")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 200, height: 200)
-                        .clipShape(Circle())
-                        .padding(.bottom, 20)
-                    
-                    GIFView(gifName: "what-huh")
-                    
                     Text("Please login")
                         .foregroundColor(.white)
                         .font(.headline)
+                    GIFView(gifName: "what-huh")
                 }
             }
         }
@@ -233,6 +226,15 @@ class OrientationInfo: ObservableObject {
             isLandscape = true
         } else if orientation.isPortrait {
             isLandscape = false
+        }
+    }
+}
+
+struct tracked_metrics_view: View {
+    
+    var body: some View {
+        VStack{
+            
         }
     }
 }

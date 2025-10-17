@@ -36,8 +36,12 @@ struct atreus_app: App {
                         }
                     }
             } else { //Enter the app
-                app_tabs().environmentObject(viewModel).environmentObject(loggedInBool)
-                
+                if loggedInBool.isLoggedIn {
+                    app_tabs().environmentObject(viewModel).environmentObject(loggedInBool)
+
+                } else{
+                    login_view().environmentObject(loggedInBool)
+                }
             }
         }
     }

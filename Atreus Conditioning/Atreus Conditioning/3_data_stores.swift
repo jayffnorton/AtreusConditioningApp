@@ -122,4 +122,24 @@ struct activity_data: Codable, Identifiable {
     var isIso: Bool
 }
 
+extension workout_data {
+    var asJSONSafe: WorkoutJSON {
+        WorkoutJSON(
+            id: id ?? UUID().uuidString,
+            name: name,
+            date: date,
+            exercises: exercises,
+            notes: notes
+        )
+    }
+}
+
+struct WorkoutJSON: Codable, Identifiable {
+    var id: String
+    var name: String
+    var date: Date
+    var exercises: [exercise_data]
+    var notes: String?
+}
+
 
