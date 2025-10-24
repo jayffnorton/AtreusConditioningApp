@@ -156,104 +156,61 @@ struct logged_in_view: View{
         }
 }
 
-struct login_view: View {
-    /*
-     Property wrapper @EnvironmentObject shares an ObservableObject across
-     it's children and itself. Automatically updates views according to
-     @observedObject. Children don't need to be injected but do need
-     the property wrapper declaration.
-     */
+
+
+struct privacy_policy_view: View {
+    
+    let email: String
+    let password: String
+    
     @EnvironmentObject var loggedInBool: logged_in_bool
-    /*
-     Property wrapper @State identifies a variable which will cause this
-     view to re-render. Due to the way these variables are stored they
-     should always be private. It's mutable meaning it cna be changed after being set.
-     */
-    @State private var email = ""
-    @State private var password = ""
-    @State private var showingResetPassword: Bool = false
+    
+    @State private var privacyPolicyText: String = ""
     
     var body: some View {
-        VStack(spacing: 20) {
-            Image("AtreusIconInverted")
-                .resizable()          // allow scaling
-                .scaledToFit()        // maintain aspect ratio
-                .frame(width: 100, height: 100) // adjust size
-                .padding(.bottom, 50)
-            
-            TextField("Email", text: $email)
-                .textInputAutocapitalization(.none)
-                .keyboardType(.emailAddress)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-            
-            SecureField("Password", text: $password)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(8)
-            
-            Button {
-                Auth.auth().signIn(withEmail: email, password: password) { result, error in
-                    if let error = error {
-                        print("Login failed: \(error.localizedDescription)")
-                    } else if let user = result?.user {
-                        print("Logged in as: \(user.email ?? "")")
-                        loggedInBool.isLoggedIn = true
-                    }
+        ScrollView{
+            VStack{
+                ScrollView {
+                    Text(privacyPolicyText)
                 }
-            } label: {
-                Text("Login")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-            }
-            
-            Button("Sign Up") {
-                Auth.auth().createUser(withEmail: email, password: password) {result, error in
-                    if let error = error {
-                        print("Error creating user: \(error.localizedDescription)")
-                    } else if let user = result?.user {
-                        print("User created: \(user.uid)")
-                        loggedInBool.isLoggedIn = true
-                        
-                        // store extra profile data in Firestore
-                        let db = Firestore.firestore()
-                        db.collection("users").document(user.uid).setData([
-                            "email": email,
-                            "name": "New User",
-                            "createdAt": FieldValue.serverTimestamp()
-                        ]) { err in
-                            if let err = err {
-                                print("Error saving user data: \(err)")
-                            } else {
-                                print("User data saved to Firestore")
+                .onAppear{load_privacy_policy()}
+                .padding(.bottom, 60)
+                
+                Button("I consent to the privacy policy") {
+                    Auth.auth().createUser(withEmail: email, password: password) {result, error in
+                        if let error = error {
+                            print("Error creating user: \(error.localizedDescription)")
+                        } else if let user = result?.user {
+                            print("User created: \(user.uid)")
+                            loggedInBool.isLoggedIn = true
+                            
+                            // store extra profile data in Firestore
+                            let db = Firestore.firestore()
+                            db.collection("users").document(user.uid).setData([
+                                "email": email,
+                                "name": "New User",
+                                "createdAt": FieldValue.serverTimestamp()
+                            ]) { err in
+                                if let err = err {
+                                    print("Error saving user data: \(err)")
+                                } else {
+                                    print("User data saved to Firestore")
+                                }
                             }
                         }
                     }
                 }
             }
-            
-            Button {
-                showingResetPassword = true
-            } label: {
-                Text("Forgotten password?")
-                    
-            }
-            
-            Spacer()
-            
         }
-        .padding()
-        .sheet(isPresented: $showingResetPassword) {
-            reset_password_view()// Replace with your real AddWorkoutView
+    }
+    
+    func load_privacy_policy() {
+        if let fileURL = Bundle.main.url(forResource: "PrivacyPolicy", withExtension: "md"),
+           let contents = try? String(contentsOf: fileURL, encoding: .utf8) {
+            privacyPolicyText = contents
         }
     }
 }
-
 struct reset_password_view: View {
     @State private var email = ""
     @State private var alertMessage = ""

@@ -155,7 +155,7 @@ struct chart_data_point: Identifiable {
     var value: Double
 }
 
-struct portrait_line_graph_view: View {
+struct portrait_line_graph_view_old: View {
     let dataPoints: [chart_data_point]
     let xLabel: String
     let xRange: ClosedRange<Date>?
@@ -174,6 +174,59 @@ struct portrait_line_graph_view: View {
             }
         }
         .chartXScale(domain: xRange!) //Force unwrap range, could cause issues
+        .chartXAxisLabel(xLabel, alignment: .center)
+        .chartYAxis(.hidden)
+        .frame(height: 200)
+    }
+}
+
+struct portrait_line_graph_view: View {
+    let dataPoints: [chart_data_point]
+    let xLabel: String
+    let xRange: ClosedRange<Date>?
+    let movingAverageWindow: Int = 3 // Number of points to average
+
+    // Compute moving average aligned with each data point
+    private var movingAverageData: [chart_data_point] {
+        guard !dataPoints.isEmpty else { return [] }
+        var averages: [chart_data_point] = []
+
+        for i in 0..<dataPoints.count {
+            // Determine the window range: previous (window-1) points + current
+            let startIndex = max(0, i - movingAverageWindow + 1)
+            let window = dataPoints[startIndex...i]
+            let avgValue = window.map { $0.value }.reduce(0, +) / Double(window.count)
+            averages.append(chart_data_point(date: dataPoints[i].date, value: avgValue))
+        }
+
+        return averages
+    }
+
+    var body: some View {
+        Chart {
+            // Original data points
+            ForEach(dataPoints) { point in
+                LineMark(
+                    x: .value("Date", point.date),
+                    y: .value("Value", point.value)
+                )
+                PointMark(
+                    x: .value("Date", point.date),
+                    y: .value("Value", point.value)
+                )
+            }
+            .lineStyle(StrokeStyle(lineWidth: 2, dash: [5]))
+            
+            // Moving average line
+            ForEach(movingAverageData) { point in
+                AreaMark(
+                    x: .value("Date", point.date),
+                    y: .value("Moving Average", point.value)
+                )
+                .foregroundStyle(.red.opacity(0.3))
+            }
+        }
+        .chartXScale(domain: xRange!)
         .chartXAxisLabel(xLabel, alignment: .center)
         .chartYAxis(.hidden)
         .frame(height: 200)

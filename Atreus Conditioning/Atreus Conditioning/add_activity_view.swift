@@ -33,7 +33,7 @@ struct add_activity_view: View {
     
     let muscleGroupOptions = ["Calfs", "Tibialis", "Quads", "Hamstrings", "Hip Flexors",
                             "Glutes", "Abs", "Obliques", "Chest", "Lower Back", "Lower Traps",
-                            "Mid Traps", "Lats", "Biceps", "Triceps", "Wrist Extenders",
+                            "Mid Traps", "Lats", "Wrist Extensors", "Biceps", "Triceps", "Wrist Extenders",
                             "Upper Traps", "Mid Delts", "Rear Delts", "Front Delts", "Supraspinatus",
                             "Infraspinatus", "Adductors", "Abductors"]
     
