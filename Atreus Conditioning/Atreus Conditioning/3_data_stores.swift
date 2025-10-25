@@ -142,4 +142,8 @@ struct WorkoutJSON: Codable, Identifiable {
     var notes: String?
 }
 
-
+struct chart_data_point: Identifiable {
+    var id = UUID()
+    var date: Date
+    var value: Double
+}

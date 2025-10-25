@@ -33,7 +33,7 @@ struct app_tabs: View {
             .badge("!")
             
             Tab("Analytics", systemImage: "scribble", value: 1) { //Image("graph.2d")
-                analytics_view()
+                analytics_view(firebaseActivities: get_activities())
             }
             .badge(2)
 

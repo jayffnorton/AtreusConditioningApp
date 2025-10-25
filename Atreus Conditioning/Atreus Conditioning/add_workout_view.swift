@@ -126,6 +126,8 @@ struct exercise_view: View {
      */
     @State private var showingActivityPicker = false
     
+    @State private var showingAddActivity = false
+    
     var body: some View {
         
         // --- Activity selector (opens sheet) ---
@@ -145,6 +147,10 @@ struct exercise_view: View {
         }
         .sheet(isPresented: $showingActivityPicker) {
             NavigationStack {
+                Button(action: { showingActivityPicker = false; showingAddActivity = true }) {
+                    Label("New Activity", systemImage: "plus.circle")
+                }
+                
                 List(firebaseActivities.activities) { activity in
                     Button(activity.name) {
                         exercise.exerciseName = activity.name
@@ -155,7 +161,9 @@ struct exercise_view: View {
                 .navigationBarTitleDisplayMode(.inline)
             }
         }
-        
+        .sheet(isPresented: $showingAddActivity) {
+            add_activity_view()
+        }
         // --- Sets list ---
         ForEach(exercise.sets.indices, id: \.self) { idx in
             set_view(currentSet: $exercise.sets[idx])

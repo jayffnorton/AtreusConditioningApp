@@ -25,6 +25,12 @@ struct analytics_view: View {
      if the view is not displayed.
      */
     @StateObject private var ownFirebaseWorkouts = get_workouts()
+    @ObservedObject var firebaseActivities: get_activities
+    @State private var trackedMetrics = Set<UUID>() //Set's are like arrays with unique elements, in this case it's a set of UUID's, initially empty
+    
+    var selectedActivities: [activity_data] {
+        return firebaseActivities.activities.filter { trackedMetrics.contains($0.id) }
+    }
     
     var body: some View {
         if loggedInBool.isLoggedIn {
@@ -32,22 +38,17 @@ struct analytics_view: View {
                 VStack {
                     Text("Analytics")
                         .padding(.bottom, 50)
-                    impulse_chart_view(firebaseWorkouts: ownFirebaseWorkouts)
+                    impulse_chart_view(firebaseWorkouts: ownFirebaseWorkouts, title: "Total Impulse")
                         .padding(.bottom, 50)
                     Text("Tracked Metrics").padding(.bottom, 50)
-                    exercise_chart_view(selectedExercise: "Wall Sit", firebaseWorkouts: ownFirebaseWorkouts)
-                    Text("Seated Hamstring Curl Iso Impulse").padding(.bottom, 50)
-                    tracked_metrics_view()
-                    exercise_chart_view(selectedExercise: "Seated Hamstring Curl Iso", firebaseWorkouts: ownFirebaseWorkouts)
-                    Text("Single Leg Calf Raise Impulse").padding(.bottom, 50)
-                    exercise_chart_view(selectedExercise: "Single Leg Calf Raise", firebaseWorkouts: ownFirebaseWorkouts)
-                    Text("Bicep Curl Impulse").padding(.bottom, 50)
-                    exercise_chart_view(selectedExercise: "Bicep Curl", firebaseWorkouts: ownFirebaseWorkouts)
-                    Text("Tricep Extension Impulse").padding(.bottom, 50)
-                    exercise_chart_view(selectedExercise: "Tricep Extension", firebaseWorkouts: ownFirebaseWorkouts)
-                    Text("External Rotation Impulse").padding(.bottom, 50)
-                    exercise_chart_view(selectedExercise: "External Rotation", firebaseWorkouts: ownFirebaseWorkouts)
+                   
+                    CollapsibleActivityList(activities: firebaseActivities.activities, trackedMetrics: $trackedMetrics)
+                    
+                    SelectedActivityCharts(activities: selectedActivities, firebaseWorkouts: ownFirebaseWorkouts)
                 }
+            }
+            .onAppear {
+                firebaseActivities.fetchActivities() // fetch once here
             }
             
         } else {
@@ -65,6 +66,18 @@ struct analytics_view: View {
     }
 }
 
+struct SelectedActivityCharts: View {
+    let activities: [activity_data]
+    @ObservedObject var firebaseWorkouts: get_workouts
+
+    var body: some View {
+        ForEach(Array(activities), id: \.id) { activity in
+            activity_chart_view(firebaseWorkouts: firebaseWorkouts,
+                                title: "\(activity.name) Load",
+                                activity: activity.name)
+        }
+    }
+}
 struct impulse_chart_view: View {
     /*
      Property wrapper @ObservedObject observes an external class and can
@@ -79,11 +92,13 @@ struct impulse_chart_view: View {
     @Environment(\.horizontalSizeClass) var hSizeClass
     var isLandscape: Bool {hSizeClass == .regular}
     
+    let title: String
+    
     var body: some View {
         VStack {
             
             //---Define graph title and x-axis range buttons ---
-            Text("Total Impulse")
+            Text(title)
                 .font(.headline)
                 .foregroundColor(.white)
             
@@ -149,42 +164,108 @@ struct impulse_chart_view: View {
     }
 }
 
-struct chart_data_point: Identifiable {
-    var id = UUID()
-    var date: Date
-    var value: Double
-}
+struct activity_chart_view: View {
+    /*
+     Property wrapper @ObservedObject observes an external class and can
+     read/react to. It does not control the class's lifecycle and updates
+     the view when a change occurs.
+     */
+    
+    @ObservedObject var firebaseWorkouts: get_workouts
+    @StateObject private var orientation = OrientationInfo()
+    
+    @State private var rangeMonths: Int = 1 //Declare variable with type and inital value (no further init needed)
+    @Environment(\.horizontalSizeClass) var hSizeClass
+    var isLandscape: Bool {hSizeClass == .regular}
+    
+    let title: String
+    let activity: String
+    
+    //Declare computed property here - View bodies can't have control flow for/if/var in them outside of specific view building calls
+    var chartData: [chart_data_point] {
+        var result: [chart_data_point] = []
 
-struct portrait_line_graph_view_old: View {
-    let dataPoints: [chart_data_point]
-    let xLabel: String
-    let xRange: ClosedRange<Date>?
-
-    var body: some View {
-        Chart {
-            ForEach(dataPoints) { point in
-                LineMark(
-                    x: .value("Date", point.date),
-                    y: .value("Value", point.value)
-                )
-                PointMark(
-                    x: .value("Date", point.date),
-                    y: .value("Value", point.value)
-                )
+        for workout in firebaseWorkouts.workouts {
+            for exercise in workout.exercises {
+                if exercise.exerciseName == activity {
+                    let setImpulse = exercise.sets.reduce(0) { partialSum, set in
+                        partialSum + ((set.weight ?? 0) * (set.durationSeconds ?? 0))
+                    }
+                    result.append(chart_data_point(date: workout.date, value: setImpulse))
+                }
             }
         }
-        .chartXScale(domain: xRange!) //Force unwrap range, could cause issues
-        .chartXAxisLabel(xLabel, alignment: .center)
-        .chartYAxis(.hidden)
-        .frame(height: 200)
+
+        return result
+    }
+
+    var body: some View {
+        VStack {
+            
+            //---Define graph title and x-axis range buttons ---
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            HStack {
+                Button{
+                } label: {
+                    Label( "calendar image", systemImage: "calendar")
+                        .labelStyle(.iconOnly)
+                }
+                ForEach([1, 3, 6, 12], id: \.self) { months in
+                    Button("\(months)mo") {rangeMonths = months}
+                            //.labelStyle(.iconOnly)
+                            .padding(10)
+                            .font(.caption)
+                            .background(rangeMonths == months ? Color.blue.opacity(0.3) : Color.gray.opacity(0.1))
+                            .clipShape(Circle())
+                }
+            }
+            .padding(.horizontal)
+            
+            //---Plot Graph---
+            
+            if firebaseWorkouts.workouts.isEmpty {
+                Text("No workout data available")
+                    .foregroundColor(.gray)
+                    .padding()
+            } else {
+
+                //Declare a closed range of types Date
+                var xAxisRange: ClosedRange<Date> {
+                    let startDate = Calendar.current.date(byAdding: .month, value: -rangeMonths, to: Date()) ?? Date()
+                    let endDate = Date()
+                    return startDate...endDate
+                }
+                
+                //---If in portrait mode, plot a simpler, smaller graph---
+                if orientation.isLandscape {
+                    HStack {
+                        Text("Impulse")
+                            .rotationEffect(.degrees(-90))
+                            .font(.caption)
+                        landscape_line_graph_view(dataPoints: chartData, xLabel: "Time", yLabel: "Impulse", xRange: xAxisRange)
+                    }
+                } else {
+                    portrait_line_graph_view(dataPoints: chartData, xLabel: "Time", xRange: xAxisRange)
+                }
+            }
+            //End of graph
+        }
+        //End of VStack
+        .padding()
+        //Call fetchWorkouts() to pull the latest data from Firestore.
+        .onAppear {
+            firebaseWorkouts.fetchWorkouts()
+        }
     }
 }
-
 struct portrait_line_graph_view: View {
     let dataPoints: [chart_data_point]
     let xLabel: String
     let xRange: ClosedRange<Date>?
-    let movingAverageWindow: Int = 3 // Number of points to average
+    let movingAverageWindow: Int = 5 // Number of points to average
 
     // Compute moving average aligned with each data point
     private var movingAverageData: [chart_data_point] {
@@ -194,9 +275,24 @@ struct portrait_line_graph_view: View {
         for i in 0..<dataPoints.count {
             // Determine the window range: previous (window-1) points + current
             let startIndex = max(0, i - movingAverageWindow + 1)
+            // Slice dataPoints, creating window, an ArraySlice which points to the original array AND INHERITS THE SAME INDICES
             let window = dataPoints[startIndex...i]
+            // Map each array element to it's .value then sum starting from 0
             let avgValue = window.map { $0.value }.reduce(0, +) / Double(window.count)
+            // Append chart data point instance
             averages.append(chart_data_point(date: dataPoints[i].date, value: avgValue))
+            /*
+             Another interesting way of doing this could be:
+             
+             let sum = (startIndex...i).reduce(0.0) { partialSum, index in
+                 partialSum + dataPoints[index].value
+             }
+             let avgValue = sum / Double(i - startIndex + 1)
+             
+             where func reduce<Result>(_ initialResult: Result, _ nextPartialResult: (Result, Element) -> Result) -> Result
+             
+             so .reduce passes two args into the closure which returns the next partialSum
+             */
         }
 
         return averages
@@ -238,7 +334,25 @@ struct landscape_line_graph_view: View {
     let xLabel: String
     let yLabel: String
     let xRange: ClosedRange<Date>?
+    let movingAverageWindow: Int = 5 // Number of points to average over
+    
+    // Compute moving average - does not take into account days on which no training is done
+    private var movingAverageData: [chart_data_point] {
+        guard !dataPoints.isEmpty else { return [] }
+        var averages: [chart_data_point] = []
 
+        for i in 0..<dataPoints.count {
+            // determine the start of the window and handle initial values
+            let startIndex = max(0, i - movingAverageWindow + 1)
+            // slice dataPoints - window is a ArraySlice and points to the original array ΑΝD KEEPS THE ORIGINAL INDICES
+            let window = dataPoints[startIndex...i]
+            //
+            let avgValue = window.map { $0.value }.reduce(0, +) / Double(window.count)
+            averages.append(chart_data_point(date: dataPoints[i].date, value: avgValue))
+        }
+
+        return averages
+    }
     var body: some View {
         Chart {
             ForEach(dataPoints) { point in
@@ -250,6 +364,15 @@ struct landscape_line_graph_view: View {
                     x: .value("Date", point.date),
                     y: .value("Value", point.value)
                 )
+            }
+            
+            // Moving average line
+            ForEach(movingAverageData) { point in
+                AreaMark(
+                    x: .value("Date", point.date),
+                    y: .value("Moving Average", point.value)
+                )
+                .foregroundStyle(.red.opacity(0.3))
             }
         }
         .chartXScale(domain: xRange!)
@@ -283,14 +406,53 @@ class OrientationInfo: ObservableObject {
     }
 }
 
-struct tracked_metrics_view: View {
+struct CollapsibleActivityList: View {
+    let activities: [activity_data]
+    @Binding var trackedMetrics: Set<UUID>
     
+    @State private var isExpanded = false // tracks collapsed/expanded state
+
     var body: some View {
-        VStack{
-            
+        VStack(spacing: 10) {
+            // Header: toggle to expand/collapse
+            Button(action: { isExpanded.toggle() }) {
+                HStack {
+                    Text("Tracked Metrics")
+                        .font(.headline)
+                    Spacer()
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+            }
+
+            // Collapsible list
+            if isExpanded {
+                ForEach(activities, id: \.id) { activity in
+                    HStack {
+                        Text(activity.name)
+                        Spacer()
+                        Image(systemName: trackedMetrics.contains(activity.id) ? "checkmark.square.fill" : "square")
+                            .onTapGesture {
+                                if trackedMetrics.contains(activity.id) {
+                                    trackedMetrics.remove(activity.id)
+                                } else {
+                                    trackedMetrics.insert(activity.id)
+                                }
+                            }
+                    }
+                    .padding(8)
+                    .background(Color.gray.opacity(0.05))
+                    .cornerRadius(8)
+                }
+                .animation(.default, value: trackedMetrics) // smooth selection updates
+            }
         }
+        .animation(.easeInOut, value: isExpanded) // smooth expand/collapse
     }
 }
+
 
 struct exercise_chart_view: View {
     let selectedExercise: String
