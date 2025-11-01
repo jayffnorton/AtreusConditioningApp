@@ -38,7 +38,7 @@ struct app_tabs: View {
             .badge(2)
 
             Tab("Home", systemImage: "house", value: 2) {
-                home_view()
+                home_view(firebaseWorkouts: get_workouts(), firebaseTemplates: get_templates(), firebaseActivities: get_activities())
             }
 
             

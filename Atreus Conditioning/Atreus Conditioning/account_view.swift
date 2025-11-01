@@ -366,3 +366,20 @@ struct GIFView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {}
 }
 
+struct Feedback: Codable {
+    let message: String
+}
+
+func sendFeedback(_ text: String) {
+    guard let url = URL(string: "https://yourserver.com/send-email") else { return }
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    let feedback = Feedback(message: text)
+    request.httpBody = try? JSONEncoder().encode(feedback)
+
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error { print("Error: \(error)") }
+        else { print("Feedback sent!") }
+    }.resume()
+}
