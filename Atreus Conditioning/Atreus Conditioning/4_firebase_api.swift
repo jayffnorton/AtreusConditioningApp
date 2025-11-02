@@ -37,6 +37,27 @@ class get_workouts: ObservableObject {
                 } ?? []
             }
     }
+    
+    func deleteWorkout(_ workout: workout_data) {
+        guard let id = workout.id,
+              let user = Auth.auth().currentUser else { return }
+
+        let db = Firestore.firestore()
+        db.collection("users")
+            .document(user.uid)
+            .collection("workouts")
+            .document(id)
+            .delete { error in
+                if let error = error {
+                    print("Error deleting workout: \(error.localizedDescription)")
+                } else {
+                    DispatchQueue.main.async {
+                        self.workouts.removeAll { $0.id == id }
+                    }
+                    print("Workout deleted successfully.")
+                }
+            }
+    }
 }
 
 class get_templates: ObservableObject {

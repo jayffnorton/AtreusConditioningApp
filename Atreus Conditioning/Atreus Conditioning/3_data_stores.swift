@@ -15,7 +15,7 @@ struct set_data: Identifiable, Codable {
     var id = UUID()
     var reps: Double?
     var weight: Double?
-    var durationSeconds: Double?
+    var durationSeconds: TimeInterval?
     var rpe: Double?
 }
 
@@ -122,4 +122,28 @@ struct activity_data: Codable, Identifiable {
     var isIso: Bool
 }
 
+extension workout_data {
+    var asJSONSafe: WorkoutJSON {
+        WorkoutJSON(
+            id: id ?? UUID().uuidString,
+            name: name,
+            date: date,
+            exercises: exercises,
+            notes: notes
+        )
+    }
+}
 
+struct WorkoutJSON: Codable, Identifiable {
+    var id: String
+    var name: String
+    var date: Date
+    var exercises: [exercise_data]
+    var notes: String?
+}
+
+struct chart_data_point: Identifiable {
+    var id = UUID()
+    var date: Date
+    var value: Double
+}
