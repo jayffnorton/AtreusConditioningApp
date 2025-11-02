@@ -136,7 +136,7 @@ struct collapsible_add_workout_view: View {
                 TextField("Notes", text: $notes)
                     .padding([.bottom, .leading, .trailing],10)
             }
-            .background(Color.gray.opacity(0.4))
+            .background(Color.gray.opacity(0.3))
             .cornerRadius(12)
             .padding([.leading, .trailing], 5)
             
@@ -252,6 +252,7 @@ struct exercise_view: View {
                 .padding(8)
                 .background(Color(.systemGray6))
                 .cornerRadius(8)
+                
             }
             .padding([.leading, .trailing, .top], 5)
             
@@ -272,7 +273,7 @@ struct exercise_view: View {
             EditButton()
                 .padding(.bottom, 10)
         }
-        .background(Color.gray.opacity(0.4))
+        .background(Color.gray.opacity(0.3))
         .cornerRadius(12)
         .padding([.leading, .trailing], 5)
         .sheet(isPresented: $showingActivityPicker) {

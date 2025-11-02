@@ -34,17 +34,24 @@ struct my_workouts_view: View {
     @State private var selectedWorkout: workout_data? = nil
     @State private var selectedTemplate: template_data? = nil
     @State private var selectedActivity: activity_data? = nil
+    @State private var workoutStartDate = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
+    @State private var workoutEndDate = Date()
 
+    var filteredWorkouts: [workout_data] {
+        firebaseWorkouts.workouts.filter {$0.date >= workoutStartDate && $0.date <= workoutEndDate}
+    }
+    
     var body: some View {
         //Don't think I can use List here due to multiple child views.
         ScrollView{
             VStack{
                 // MARK: Templates
-                Section {
+                VStack {
                     Text("My Templates").font(.headline)
-                    Button(action: { showingAddTemplate = true }) {
-                        Label("New Template", systemImage: "plus.circle")
-                    }
+                    .padding(.top, 7)
+                    
+                    Divider()
+                    
                     if firebaseTemplates.templates.isEmpty {
                         Text("No template data available").foregroundColor(.gray)
                     } else {
@@ -55,36 +62,75 @@ struct my_workouts_view: View {
                                 Text(template.date.formatted())
                                 Button("Details") { selectedTemplate = template }
                             }
+                            .padding([.trailing, .leading], 5)
+                            Divider()
                         }
                     }
+                    
+                    Button(action: { showingAddTemplate = true }) {
+                        Label("New Template", systemImage: "plus.circle")
+                    }
+                    .padding([.top, .bottom], 7)
                 }
+                .background(Color.gray.opacity(0.3))
+                .cornerRadius(12)
+                .padding([.leading, .trailing], 5)
+                .padding(.bottom, 7)
+                
                 
                 // MARK: Workouts
-                Section {
+                VStack {
                     Text("My Workouts").font(.headline)
-                    Button(action: { showingAddWorkout = true }) {
-                        Label("New Workout", systemImage: "plus.circle")
-                    }
+                    .padding(.top, 7)
+            
+                    DatePicker("From:", selection: $workoutStartDate, displayedComponents: .date)
+                    .padding([.leading, .trailing], 7)
+                    
+                    DatePicker("To:", selection: $workoutEndDate, displayedComponents: .date)
+                    .padding([.leading, .trailing, .bottom], 7)
+                    Divider()
+                    
                     if firebaseWorkouts.workouts.isEmpty {
                         Text("No workout data available").foregroundColor(.gray)
                     } else {
-                        ForEach(firebaseWorkouts.workouts) { workout in
+                        ForEach(filteredWorkouts) { workout in
                             HStack {
                                 Text(workout.name)
+                                Text(" - ")
+                                Text(workout.date.formatted(date: .numeric, time: .omitted))
                                 Spacer()
-                                Text(workout.date.formatted())
-                                Button("Details") { selectedWorkout = workout }
+                                Button(action: { selectedWorkout = workout }) {
+                                    Label("", systemImage: "magnifyingglass.circle")
+                                }
                             }
+                            .padding([.trailing, .leading], 7)
+                            Divider()
                         }
                     }
+                    
+                    Button(action: { showingAddWorkout = true }) {
+                        Label("New Workout", systemImage: "plus.circle")
+                    }
+                    .padding([.top, .bottom], 7)
                 }
+                .background(Color.gray.opacity(0.3))
+                .cornerRadius(12)
+                .padding([.leading, .trailing], 5)
+                .padding(.bottom, 7)
+                
                 
                 // MARK: Activities
-                Section {
+                VStack {
                     Text("My Activities").font(.headline)
+                        .padding(.top, 7)
+                    
                     Button(action: { showingAddActivity = true }) {
                         Label("New Activity", systemImage: "plus.circle")
                     }
+                    .padding([.top, .bottom], 7)
+                    
+                    Divider()
+                    
                     if firebaseActivities.activities.isEmpty {
                         Text("No activity data available").foregroundColor(.gray)
                     } else {
@@ -94,12 +140,17 @@ struct my_workouts_view: View {
                                 Spacer()
                                 Button("Details") { selectedActivity = activity }
                             }
+                            .padding([.trailing, .leading], 5)
+                            Divider()
                         }
                     }
                 }
+                .background(Color.gray.opacity(0.3))
+                .cornerRadius(12)
+                .padding([.leading, .trailing], 5)
+                .padding(.bottom, 5)
             }
         }
-        .padding()
         
         
         //.navigationTitle("My Workouts")
