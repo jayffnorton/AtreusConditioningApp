@@ -42,60 +42,63 @@ struct edit_workout_view: View {
         exercises = workout.exercises
     }
     var body: some View {
-        
-        List {
-            // Workout info
-            Section("Workout Info") {
-                TextField("Workout Name", text: $name)
-                DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
-                TextField("Notes", text: $notes)
-            }
-            
-
-            // Exercises
-            ForEach(exercises.indices, id: \.self) { idx in
-                edit_exercise_view(firebaseActivities: firebaseActivities, exercise: $exercises[idx])
-            }
-            
-            
-            Section{
-                Button(action: { exercises.append(exercise_data()) }) {
-                    Label("Add Exercise", systemImage: "plus.circle")
+        ScrollView{
+            VStack(spacing: 10) {
+                // Workout info
+                VStack{
+                    TextField("Workout Name", text: $name)
+                    DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                    TextField("Notes", text: $notes)
                 }
-            }
-            
-            Section{
-                EditButton()
-            }
-
-            // Save button
-            Section {
-                Button("Save Workout") { saveWorkout(); editingWorkout = false}
-
-                Button(role: .destructive) {
-                    showConfirmDelete = true
-                } label: {
-                    Label("Delete Workout", systemImage: "trash")
-                        .padding()
-                        .frame(maxWidth: .infinity)
+                
+                
+                // Exercises
+                ForEach(exercises.indices, id: \.self) { idx in
+                    edit_exercise_view(firebaseActivities: firebaseActivities, exercise: $exercises[idx])
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.red)
-                .confirmationDialog("Are you sure you want to delete this workout?",
-                    isPresented: $showConfirmDelete,
-                    titleVisibility: .visible) {
-                    Button("Delete", role: .destructive) {
-                        firebaseWorkouts.deleteWorkout(workout)
-                        dismiss()
+                
+                Section{
+                    Button(action: { exercises.append(exercise_data()) }) {
+                        Label("Add activity", systemImage: "plus.circle")
                     }
-                    Button("Cancel", role: .cancel) {}
+                }
+                
+                Section{
+                    EditButton()
+                }
+                
+                Section {
+                    Button(action: { editingWorkout = false }) {
+                        Label("Cancel Workout", systemImage: "minus.circle")
+                    }
+                }
+                // Save button
+                Section {
+                    Button("Save Workout") { saveWorkout(); editingWorkout = false }
+                    Button(role: .destructive) {
+                        showConfirmDelete = true
+                    } label: {
+                        Label("Delete Workout", systemImage: "trash")
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.red)
+                    .confirmationDialog("Are you sure you want to delete this workout?",
+                                        isPresented: $showConfirmDelete,
+                                        titleVisibility: .visible) {
+                        Button("Delete", role: .destructive) {
+                            firebaseWorkouts.deleteWorkout(workout)
+                            dismiss()
+                        }
+                        Button("Cancel", role: .cancel) {}
+                    }
                 }
             }
         }
-        .onAppear {
-            firebaseActivities.fetchActivities(); // fetch once here
-            get_params()
-        }
+        //.animation(.easeInOut, value: isExpanded) // smooth expand/collapse
+        .onAppear {firebaseActivities.fetchActivities();get_params()}
+        .padding(.top, 90)
     }
 
     // MARK: - Save Function
@@ -173,6 +176,7 @@ struct edit_exercise_view: View {
     
     var body: some View {
         VStack{
+            
             // --- Activity selector (opens sheet) ---
             VStack{
                 Button {
