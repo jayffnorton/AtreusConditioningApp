@@ -1,14 +1,14 @@
 //
-//  AddWorkoutView.swift
+//  add_workout_view.swift
 //  Atreus Conditioning
 //
-//  Created by Jay Norton on 19/09/2025.
+//  Created by Jay Norton on 06/12/2025.
 //
 import SwiftUI
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
-// MARK: - AddWorkoutView
+import Charts
 
 struct add_workout_view: View {
     @Environment(\.dismiss) var dismiss
@@ -19,6 +19,10 @@ struct add_workout_view: View {
      */
     @ObservedObject var firebaseActivities: get_activities
     
+    @Binding var showingAddWorkout: Bool
+    
+    @State private var isExpanded = false // tracks collapsed/expanded state
+    
     /*
      Property wrapper @State identifies a variable which will cause this
      view to re-render. Due to the way these variables are stored they
@@ -28,15 +32,23 @@ struct add_workout_view: View {
     @State private var date = Date()
     @State private var exercises: [exercise_data] = []
     @State private var notes = ""
-
+    
+    
     var body: some View {
-        List {
+        VStack(spacing: 10) {
             // Workout info
-            Section("Workout Info") {
+            VStack {
                 TextField("Workout Name", text: $name)
+                    .padding([.top, .leading, .trailing],10)
                 DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                    .padding([.leading, .trailing],10)
                 TextField("Notes", text: $notes)
+                    .padding([.bottom, .leading, .trailing],10)
             }
+            .background(Color.gray.opacity(0.3))
+            .cornerRadius(12)
+            .padding([.leading, .trailing], 5)
+            
             
 
             // Exercises
@@ -47,24 +59,30 @@ struct add_workout_view: View {
             
             Section{
                 Button(action: { exercises.append(exercise_data()) }) {
-                    Label("Add Exercise", systemImage: "plus.circle")
+                    Label("Add activity", systemImage: "plus.circle")
                 }
             }
             
             Section{
                 EditButton()
             }
-
+            
+            Section {
+                Button(action: { showingAddWorkout = false }) {
+                    Label("Cancel Workout", systemImage: "minus.circle")
+                }
+            }
             // Save button
             Section {
-                Button("Save Workout") { saveWorkout() }
+                Button("Save Workout") { saveWorkout(); showingAddWorkout = false }
             }
         }
-        .onAppear {
-                    firebaseActivities.fetchActivities() // fetch once here
-                }
+        .animation(.easeInOut, value: isExpanded) // smooth expand/collapse
+        .onAppear {firebaseActivities.fetchActivities()}
+        .padding(.top, 90)
+        
     }
-
+    
     // MARK: - Save Function
     func saveWorkout() {
         guard let user = Auth.auth().currentUser else {
@@ -107,5 +125,3 @@ struct add_workout_view: View {
         }
     }
 }
-
-// MARK: - Exercise View

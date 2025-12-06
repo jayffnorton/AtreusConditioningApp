@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import Charts
 
-struct my_workouts_view: View {
+struct library_view: View {
     /*
      Property wrapper @ObservedObject observes an external class and can
      red/react to. It does not control the class's lifecycle and updates
@@ -164,9 +164,6 @@ struct my_workouts_view: View {
                 TemplateDetailView(template: template)
             }
             
-            .sheet(isPresented: $showingAddWorkout) {
-                add_workout_view(firebaseActivities: firebaseActivities) // Replace with your real AddWorkoutView
-            }
             .sheet(isPresented: $showingAddActivity) {
                 add_activity_view()
             }
@@ -187,55 +184,6 @@ struct my_workouts_view: View {
             edit_workout_view(workout: workout, firebaseActivities: firebaseActivities, firebaseWorkouts: firebaseWorkouts)
         }
          */
-    }
-}
-
-struct WorkoutDetailView: View {
-    let workout: workout_data
-    @ObservedObject var firebaseWorkouts: get_workouts
-    @Environment(\.dismiss) private var dismiss
-    @State private var showConfirmDelete = false
-
-    var body: some View {
-        VStack(spacing: 12) {
-            Text(workout.name).font(.title)
-            Text(workout.date.formatted())
-
-            if let notes = workout.notes {
-                Text(notes)
-            }
-
-            List(workout.exercises) { exercise in
-                VStack(alignment: .leading) {
-                    Text(exercise.exerciseName).bold()
-                    ForEach(exercise.sets) { set in
-                        Text("kg: \((set.weight ?? 0)), Reps: \((set.reps ?? 0)), Duration: \((set.durationSeconds ?? 0)), RPE: \((set.rpe ?? 0))")
-                    }
-                }
-            }
-
-            Spacer()
-
-            Button(role: .destructive) {
-                showConfirmDelete = true
-            } label: {
-                Label("Delete Workout", systemImage: "trash")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.red)
-            .confirmationDialog("Are you sure you want to delete this workout?",
-                isPresented: $showConfirmDelete,
-                titleVisibility: .visible) {
-                Button("Delete", role: .destructive) {
-                    firebaseWorkouts.deleteWorkout(workout)
-                    dismiss()
-                }
-                Button("Cancel", role: .cancel) {}
-            }
-        }
-        .padding()
     }
 }
 

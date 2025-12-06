@@ -42,18 +42,19 @@ struct app_tabs: View {
             }
 
             
-            Tab("AddWorkout", systemImage: "plus", value: 3) {
-                my_workouts_view(firebaseWorkouts: get_workouts(), firebaseTemplates: get_templates(), firebaseActivities: get_activities())
+            Tab("Library", systemImage: "plus", value: 3) {
+                library_view(firebaseWorkouts: get_workouts(), firebaseTemplates: get_templates(), firebaseActivities: get_activities())
             }
             
             Tab("InjuryReporter", systemImage: "exclamationmark.triangle.fill", value: 4) {
-                add_workout_view(firebaseActivities: get_activities())
+                home_view(firebaseWorkouts: get_workouts(), firebaseTemplates: get_templates(), firebaseActivities: get_activities())
             }
             
             Tab("Exporter", systemImage: "square.and.arrow.up", value: 5 ) {
-                add_workout_view(firebaseActivities: get_activities())
+                home_view(firebaseWorkouts: get_workouts(), firebaseTemplates: get_templates(), firebaseActivities: get_activities())
             }
         }
+        
         //the following ads a slight delay after swipes. Animation could be enhanced using zstack and .transition
         .environmentObject(loggedInBool)
         .animation(.easeInOut(duration: 0.5), value: selectedTab)
