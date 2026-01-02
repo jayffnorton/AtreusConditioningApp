@@ -16,6 +16,7 @@ struct set_data: Identifiable, Codable {
     var reps: Double?
     var weight: Double?
     var durationSeconds: TimeInterval?
+    var rest: TimeInterval?
     var rpe: Double?
 }
 
