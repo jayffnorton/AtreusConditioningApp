@@ -130,7 +130,7 @@ struct exercise_view: View {
                     Label("New Activity", systemImage: "plus.circle")
                 }
                 
-                //let activityList = firebaseActivities.activities.sorted()
+                let activityList = firebaseActivities.activities.name.sorted()
                 
                 List(firebaseActivities.activities) { activity in
                     Button(activity.name) {
