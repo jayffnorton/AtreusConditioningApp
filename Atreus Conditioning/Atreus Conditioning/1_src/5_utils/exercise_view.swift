@@ -70,54 +70,6 @@ struct exercise_view: View {
                 Label("Add Set", systemImage: "plus.circle")
             }
             
-            Text(timeString(from: elapsedTime))
-                .font(.system(size: 40, weight: .bold, design: .monospaced))
-                .frame(minWidth: 120)
-            
-            if resting {
-                HStack {
-                    Button(isRunning ? "Stop Rest" : "Start Rest") {
-                        if isRunning {
-                            stop();
-                            exercise.sets[-1].rest = elapsedTime;
-                            resting = false;
-                            elapsedTime = 0
-                        } else {
-                            start()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    
-                    Button("Reset") {
-                        reset()
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(isRunning == true)
-                }
-                
-            } else{
-                HStack {
-                    Button(isRunning ? "Stop Set" : "Start Set") {
-                        if isRunning {
-                            stop();
-                            newSet.durationSeconds = elapsedTime;
-                            exercise.sets.append(newSet);
-                            resting = true;
-                            elapsedTime = 0
-                        } else {
-                            start()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    
-                    Button("Reset") {
-                        reset()
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(isRunning == true)
-                }
-            }
-            
             EditButton()
                 .padding(.bottom, 10)
         }
