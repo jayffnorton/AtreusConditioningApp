@@ -1,0 +1,22 @@
+# Xcode builds
+DerivedData/
+build/
+
+# User-specific Xcode settings
+**/*.pbxuser
+**/*.mode1v3
+**/*.mode2v3
+**/*.perspectivev3
+**/*.xcuserstate
+
+# Finder UI
+**/*.DS_Store
+
+# Archives & logs
+**/**/*.dSYM
+*.log
+**/*.crash
+
+# Playgrounds
+timeline.xctimeline
+playground.xcworkspace

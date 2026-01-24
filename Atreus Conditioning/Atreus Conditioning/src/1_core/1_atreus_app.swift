@@ -22,7 +22,11 @@ struct atreus_app: App {
      */
     @State private var showSplash = true
     
-    init(){FirebaseApp.configure()}
+    @UIApplicationDelegateAdaptor(AppDelegate.self)
+    var appDelegate
+     
+    
+    //init(){FirebaseApp.configure()}
     
     var body: some Scene {
         WindowGroup {
