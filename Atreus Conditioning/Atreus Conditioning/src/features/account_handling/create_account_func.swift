@@ -19,9 +19,8 @@ func create_account_func(email: String, password: String, loggedInBool: logged_i
         loggedInBool = true
 
     } catch let error as NSError {
-        
-        
-        showError(error.localizedDescription)
+        let errorMessage = AuthErrorCode(rawValue: error.code)
+        report_error(errorMessage: "Something went wrong")
     }
     
     return loggedInBool
