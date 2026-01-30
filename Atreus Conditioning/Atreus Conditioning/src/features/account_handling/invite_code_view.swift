@@ -53,7 +53,7 @@ struct invite_code_view: View {
             }
         }
         .fullScreenCover(isPresented: $isCodeValid) {
-            login_view().environmentObject(loggedInBool)
+            login_or_create_view().environmentObject(loggedInBool)
         }
     }
 }

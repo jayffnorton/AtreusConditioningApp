@@ -148,3 +148,18 @@ struct chart_data_point: Identifiable {
     var date: Date
     var value: Double
 }
+
+class logged_in_bool: ObservableObject {
+    /*
+    Property wrapper @Published is an observable that is
+    observed by a view. It will cause the view to refresh when the property updates.
+    Does not own the lifecycle (init, usage, deallocation) of the variable.
+    Only used in classes.
+    */
+    @Published var isLoggedIn: Bool = false
+
+    init() {
+        // This runs once when you create an instance
+        self.isLoggedIn = Auth.auth().currentUser != nil
+    }
+}

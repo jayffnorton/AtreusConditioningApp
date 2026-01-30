@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 
 @main
-struct atreus_app: App {
+struct root: App {
     //The body of this struct will be re-run if the following variables change
     @StateObject private var viewModel = WorkoutViewModel() //Instantiate class
     @StateObject var loggedInBool = logged_in_bool() //Instantiate class

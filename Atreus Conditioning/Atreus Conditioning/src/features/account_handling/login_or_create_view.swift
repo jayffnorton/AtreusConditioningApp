@@ -8,7 +8,7 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
-struct login_view: View {
+struct login_or_create_view: View {
     /*
      Property wrapper @EnvironmentObject shares an ObservableObject across
      it's children and itself. Automatically updates views according to
@@ -19,7 +19,7 @@ struct login_view: View {
     /*
      Property wrapper @State identifies a variable which will cause this
      view to re-render. Due to the way these variables are stored they
-     should always be private. It's mutable meaning it cna be changed after being set.
+     should always be private. It's mutable meaning it can be changed after being set.
      */
     @State private var email = ""
     @State private var password = ""
@@ -48,16 +48,15 @@ struct login_view: View {
                 .cornerRadius(8)
             
             Button {
-                Auth.auth().signIn(withEmail: email, password: password) { result, error in
-                    if let error = error {
-                        print("Login failed: \(error.localizedDescription)")
-                    } else if let user = result?.user {
-                        print("Logged in as: \(user.email ?? "")")
-                        loggedInBool.isLoggedIn = true
-                    }
+                Task {
+                    showingPrivacyPolicy = await login_or_create_func(email: email, password: password, loggedInBool: loggedInBool)
+                    //Clear email and password from memory
+                    email = ""
+                    password = ""
                 }
+
             } label: {
-                Text("Login")
+                Text("Login/Create account")
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.blue)
@@ -66,12 +65,11 @@ struct login_view: View {
                     .padding(.horizontal)
             }
             
-            Button("Sign Up") {
-                showingPrivacyPolicy = true
-            }
-            
             Button {
                 showingResetPassword = true
+                //Clear email and password from memory
+                email = ""
+                password = ""
             } label: {
                 Text("Forgotten password?")
                     
@@ -82,10 +80,14 @@ struct login_view: View {
         }
         .padding()
         .sheet(isPresented: $showingResetPassword) {
-            reset_password_view()// Replace with your real AddWorkoutView
+            reset_password_view()
         }
         .sheet(isPresented: $showingPrivacyPolicy) {
             privacy_policy_view(email: email, password: password).environmentObject(loggedInBool)
         }
     }
 }
+
+
+
+
