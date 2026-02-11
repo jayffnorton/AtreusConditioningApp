@@ -26,7 +26,7 @@ struct account_view: View {
             logged_in_view(firebaseWorkouts: get_workouts()).environmentObject(loggedInBool)
         }
         else{
-            login_view().environmentObject(loggedInBool)
+            login_or_create_view().environmentObject(loggedInBool)
         }
     }
 }
@@ -198,7 +198,7 @@ struct RootView: View {
         if userVM.isLoggedIn {
             app_tabs() // your main app
         } else {
-            login_view()
+            login_or_create_view()
         }
     }
 }

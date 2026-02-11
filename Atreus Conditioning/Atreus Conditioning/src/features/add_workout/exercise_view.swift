@@ -36,9 +36,15 @@ struct exercise_view: View {
     
     @State private var resting: Bool = false
     
+    @State private var searchText = ""
+    
+    
+    
     var body: some View {
         VStack{
-            // --- Activity selector (opens sheet) ---
+            
+            // --- Activity selector button (opens sheet) ---
+            
             Button {
                 showingActivityPicker = true
             } label: {
@@ -56,7 +62,9 @@ struct exercise_view: View {
             }
             .padding([.leading, .trailing, .top], 5)
             
-            // --- Sets list ---
+            
+            // --- List of sets ---
+            
             ForEach(exercise.sets.indices, id: \.self) { idx in
                 set_view(currentSet: $exercise.sets[idx])
             }
@@ -81,8 +89,12 @@ struct exercise_view: View {
                 Button(action: { showingActivityPicker = false; showingAddActivity = true }) {
                     Label("New Activity", systemImage: "plus.circle")
                 }
-                
-                List(firebaseActivities.activities) { activity in
+
+                let filteredActivities = firebaseActivities.activities
+                    .filter { searchText.isEmpty || $0.name.localizedCaseInsensitiveContains(searchText) }
+                    .sorted { $0.name < $1.name }
+
+                List(filteredActivities) { activity in
                     Button(activity.name) {
                         exercise.exerciseName = activity.name
                         showingActivityPicker = false
@@ -90,6 +102,7 @@ struct exercise_view: View {
                 }
                 .navigationTitle("Select Activity")
                 .navigationBarTitleDisplayMode(.inline)
+                .searchable(text: $searchText, prompt: "Find activity")
             }
         }
         .sheet(isPresented: $showingAddActivity) {

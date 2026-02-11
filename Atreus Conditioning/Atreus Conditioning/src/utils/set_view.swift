@@ -19,77 +19,102 @@ struct set_view: View {
     @State private var isRunning = false
 
     var body: some View {
-        HStack(spacing: 12) {
-            TextField("kg", text: Binding(
-                get: {
-                    if let w = currentSet.weight {
-                        return String(w)}
-                    else {
-                        return ""
+        if showStopwatch {
+                    VStack(spacing: 10) {
+                        Text(timeString(from: elapsedTime))
+                            .font(.system(size: 40, weight: .bold, design: .monospaced))
+                            .frame(minWidth: 120)
+                        
+                        HStack {
+                            Button(isRunning ? "Stop Set" : "Start Set") {
+                                if isRunning {
+                                    stop(); currentSet.durationSeconds = elapsedTime
+                                } else {
+                                    start()
+                                }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            
+                            Button("Reset") {
+                                reset()
+                            }
+                            .buttonStyle(.bordered)
+                            .disabled(isRunning == true)
+                        }
                     }
-                },
-                set: {
-                    currentSet.weight = Double($0)
-                }
-            ))
+                    .padding()
+                    
+        } else{
+            HStack(spacing: 12) {
+                TextField("kg", text: Binding(
+                    get: {
+                        if let w = currentSet.weight {
+                            return String(w)}
+                        else {
+                            return ""
+                        }
+                    },
+                    set: {
+                        currentSet.weight = Double($0)
+                    }
+                ))
                 .keyboardType(.decimalPad)
                 .frame(width: 60)
-                      
-            TextField("Reps", text: Binding(
-                get: {
-                    if let w = currentSet.reps {
-                        return String(w)}
-                    else {
-                        return ""
+                
+                TextField("Reps", text: Binding(
+                    get: {
+                        if let w = currentSet.reps {
+                            return String(w)}
+                        else {
+                            return ""
+                        }
+                    },
+                    set: {
+                        currentSet.reps = Double($0)
                     }
-                },
-                set: {
-                    currentSet.reps = Double($0)
-                }
-            ))
+                ))
                 .keyboardType(.decimalPad)
                 .frame(width: 60)
-            
-            TextField("Duration", text: Binding(
-                get: {
-                    if let w = currentSet.durationSeconds {
-                        return timeString(from: w)}
-                    else {
-                        return ""
+                
+                TextField("Duration", text: Binding(
+                    get: {
+                        if let w = currentSet.durationSeconds {
+                            return timeString(from: w)}
+                        else {
+                            return ""
+                        }
+                    },
+                    set: {
+                        let parts = $0.split(separator: ":").map(String.init)
+                        if parts.count == 2,
+                           let minutes = Double(parts[0]),
+                           let seconds = Double(parts[1]) {
+                            currentSet.durationSeconds = minutes * 60 + seconds
+                        } else {
+                            currentSet.durationSeconds = Double($0) ?? 0
+                        }
                     }
-                },
-                set: {
-                    let parts = $0.split(separator: ":").map(String.init)
-                    if parts.count == 2,
-                       let minutes = Double(parts[0]),
-                       let seconds = Double(parts[1]) {
-                        currentSet.durationSeconds = minutes * 60 + seconds
-                    } else {
-                        currentSet.durationSeconds = Double($0) ?? 0
-                    }
-                }
-            ))
+                ))
                 .keyboardType(.decimalPad)
                 .frame(width: 90)
-                    
-            TextField("RPE", text: Binding(
-                get: {
-                    if let w = currentSet.rpe {
-                        return String(w)}
-                    else {
-                        return ""
+                
+                TextField("RPE", text: Binding(
+                    get: {
+                        if let w = currentSet.rpe {
+                            return String(w)}
+                        else {
+                            return ""
+                        }
+                    },
+                    set: {
+                        currentSet.rpe = Double($0)
                     }
-                },
-                set: {
-                    currentSet.rpe = Double($0)
-                }
-            ))
+                ))
                 .keyboardType(.decimalPad)
                 .frame(width: 60)
+            }
+            .padding(.vertical, 4)
         }
-        .padding(.vertical, 4)
-        
-        
     }
     
     func start() {
@@ -103,6 +128,7 @@ struct set_view: View {
             }
         }
     }
+    
     
     func stop() {
         timer?.invalidate()

@@ -32,7 +32,16 @@ struct privacy_policy_view: View {
                 
                 Button("I consent to the privacy policy") {
                     Task{
-                        loggedInBool = create_account_func(email: email, password: password, loggedInBool: logged_in_bool)
+                        do {
+                            let result = try await Auth.auth().createUser(withEmail: email,password: password)
+                            print("Account created:", result.user.email ?? "")
+                            loggedInBool.isLoggedIn = true
+
+                        } catch let error as NSError {
+                            loggedInBool.isLoggedIn = false
+                            
+                            
+                        }
                     }
                     
                 }

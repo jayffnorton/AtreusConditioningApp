@@ -25,6 +25,8 @@ struct login_or_create_view: View {
     @State private var password = ""
     @State private var showingResetPassword: Bool = false
     @State private var showingPrivacyPolicy: Bool = false
+    @State private var errorMessage: String? = nil
+    @State private var showingErrorAlert: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {
@@ -49,10 +51,52 @@ struct login_or_create_view: View {
             
             Button {
                 Task {
-                    showingPrivacyPolicy = await login_or_create_func(email: email, password: password, loggedInBool: loggedInBool)
-                    //Clear email and password from memory
-                    email = ""
-                    password = ""
+                    do {
+                        
+                        if let infoDict = Bundle.main.infoDictionary,
+                           let apiKey = infoDict["API_KEY"] as? String {
+                            print("Firebase API Key in use: \(apiKey)")
+                        } else {
+                            print("API key not found in plist")
+                        }
+                        //Try and sign user in
+                        
+                        //Funcs marked with "throws" must be called with try but this does not handle errors
+                        let result = try await Auth.auth().signIn(withEmail: email, password: password)
+
+                        print("Logged in as:", result.user.email ?? "")
+                        loggedInBool.isLoggedIn = true
+
+                    } catch let error as NSError {
+                        /*
+                        Firebase almost always defines errors as NSError type in objective-c as this is the language
+                        it's written in. Firebase API exposes these as swift Errors, but these don't have guaranteed
+                         properties. Therefore, it's necessary to cast to NSError, then use AuthErrorCode to map
+                        the error code to an enum.
+                        
+                        NSError types can also provide userInfo and domain info
+                        */
+
+                        switch AuthErrorCode(rawValue: error.code) {
+
+                        case .userNotFound:
+                            // Account does not exist → show privacy policy before account creation
+                            showingPrivacyPolicy = true
+
+                        case .wrongPassword:
+                            errorMessage = "Incorrect password"
+                            showingErrorAlert = true
+
+                        case .invalidEmail:
+                            errorMessage = "Please enter a valid email address"
+                            showingErrorAlert = true
+
+                        default:
+                            errorMessage = "Something went wrong: " + String(error.code) + " .Please try again"
+                            showingErrorAlert = true
+                        }
+                    }
+                    
                 }
 
             } label: {
@@ -68,8 +112,8 @@ struct login_or_create_view: View {
             Button {
                 showingResetPassword = true
                 //Clear email and password from memory
-                email = ""
-                password = ""
+                //email = ""
+                //password = ""
             } label: {
                 Text("Forgotten password?")
                     
@@ -83,11 +127,13 @@ struct login_or_create_view: View {
             reset_password_view()
         }
         .sheet(isPresented: $showingPrivacyPolicy) {
-            privacy_policy_view(email: email, password: password).environmentObject(loggedInBool)
+            privacy_policy_view(email: email, password: password)
+        }
+        .alert("Error", isPresented: $showingErrorAlert, presenting: errorMessage) { _ in
+            Button("OK", role: .cancel) {}
+        } message: { message in
+            Text(message)
         }
     }
 }
-
-
-
 
