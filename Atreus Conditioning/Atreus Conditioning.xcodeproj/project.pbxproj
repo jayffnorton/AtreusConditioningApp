@@ -10,6 +10,7 @@
 		94A4F66B2E806B4900C7D906 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66A2E806B4900C7D906 /* FirebaseAuth */; };
 		94A4F66D2E806B4900C7D906 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66C2E806B4900C7D906 /* FirebaseFirestore */; };
 		94A4F66F2E806B4900C7D906 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 94A4F66E2E806B4900C7D906 /* FirebaseStorage */; };
+		94CBE9462F439069002274CD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94CBE9452F439069002274CD /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		946EC4E52E7B1BE5002A3C41 /* Atreus Conditioning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Atreus Conditioning.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		946EC4F52E7B1C00002A3C41 /* Atreus ConditioningTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atreus ConditioningTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		946EC4FF2E7B1C00002A3C41 /* Atreus ConditioningUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Atreus ConditioningUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		94CBE9452F439069002274CD /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -88,6 +90,7 @@
 				946EC4F82E7B1C00002A3C41 /* Atreus ConditioningTests */,
 				946EC5022E7B1C00002A3C41 /* Atreus ConditioningUITests */,
 				946EC4E62E7B1BE5002A3C41 /* Products */,
+				94CBE9452F439069002274CD /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -227,6 +230,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94CBE9462F439069002274CD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

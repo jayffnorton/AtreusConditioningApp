@@ -14,10 +14,10 @@ import WebKit
 
 struct privacy_policy_view: View {
     
-    let email: String
-    let password: String
+    @Binding var showingPrivacyPolicy: Bool
+    @Binding var hasConsented: Bool
     
-    @EnvironmentObject var loggedInBool: logged_in_bool
+    //@EnvironmentObject var loggedInBool: logged_in_bool
     
     @State private var privacyPolicyText: String = ""
     
@@ -31,6 +31,9 @@ struct privacy_policy_view: View {
                 .padding(.bottom, 60)
                 
                 Button("I consent to the privacy policy") {
+                    showingPrivacyPolicy = false
+                    hasConsented = true
+                    /*
                     Task{
                         do {
                             let result = try await Auth.auth().createUser(withEmail: email,password: password)
@@ -43,6 +46,7 @@ struct privacy_policy_view: View {
                             
                         }
                     }
+                    */
                     
                 }
             }

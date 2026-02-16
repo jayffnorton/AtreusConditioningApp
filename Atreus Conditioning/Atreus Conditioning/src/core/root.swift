@@ -22,8 +22,10 @@ struct root: App {
      */
     @State private var showSplash = true
     
+    
+    //Tell the system to instantiate the AppDelegate class (AppDelegate.self is a type reference)
     @UIApplicationDelegateAdaptor(AppDelegate.self)
-    var appDelegate
+    var appDelegate //Allocate instance to appDelegate
      
     
     //init(){FirebaseApp.configure()}
