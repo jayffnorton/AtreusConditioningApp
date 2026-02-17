@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseFirestore
 import Charts
 
-struct set_data: Identifiable, Codable {
+struct set_data: Identifiable, Codable, Equatable {
     var id = UUID()
     var reps: Double?
     var weight: Double?
@@ -20,7 +20,7 @@ struct set_data: Identifiable, Codable {
     var rpe: Double?
 }
 
-struct exercise_data: Identifiable, Codable {
+struct exercise_data: Identifiable, Codable, Equatable {
     var id = UUID()
     var exerciseName: String = ""
     var sets: [set_data] = []

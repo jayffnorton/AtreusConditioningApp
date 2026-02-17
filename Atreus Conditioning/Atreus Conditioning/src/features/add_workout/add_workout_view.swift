@@ -33,6 +33,10 @@ struct add_workout_view: View {
     @State private var exercises: [exercise_data] = []
     @State private var notes = ""
     
+    private var workout: workout_data {
+        compileWorkout()
+    }
+    
     
     var body: some View {
         VStack(spacing: 10) {
@@ -79,16 +83,17 @@ struct add_workout_view: View {
         }
         .animation(.easeInOut, value: isExpanded) // smooth expand/collapse
         .onAppear {firebaseActivities.fetchActivities()}
+        /*
+         Use _ as placeholder for unused parameter and use "in"
+         to seperate the closures parameter list from the body
+        */
+        .onChange(of: exercises) { _, _ in cacheWorkout() }
         .padding(.top, 90)
         
     }
+        
     
-    // MARK: - Save Function
-    func saveWorkout() {
-        guard let user = Auth.auth().currentUser else {
-            print("No user logged in")
-            return
-        }
+    func compileWorkout() -> workout_data {
 
         // Filter out empty exercises or sets
         let filteredExercises = exercises.map { exercise -> exercise_data in
@@ -103,16 +108,32 @@ struct add_workout_view: View {
 
         guard !filteredExercises.isEmpty else {
             print("No valid exercises to save")
-            return
+            return workout_data(
+                name: "",
+                date: Date(),
+                exercises: [],
+                notes: nil
+            )
         }
 
-        let workout = workout_data(
+        let compiledWorkout = workout_data(
             name: name.isEmpty ? "Untitled Workout" : name,
             date: date,
             exercises: filteredExercises,
             notes: notes.isEmpty ? nil : notes
         )
+        return compiledWorkout
+    }
+    
+    // MARK: - Save Function
+    func saveWorkout() {
+        let workout = compileWorkout()
 
+        guard let user = Auth.auth().currentUser else {
+            print("No user logged in")
+            return
+        }
+        
         let db = Firestore.firestore()
         do {
             try db.collection("users")
@@ -124,4 +145,40 @@ struct add_workout_view: View {
             print("Error saving workout: \(error)")
         }
     }
+    
+    func cacheWorkout() {
+
+        let workout = compileWorkout()
+        
+        let url = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("workoutCache.json")
+        do {
+            let data = try JSONEncoder().encode(workout)
+            try data.write(to: url, options: [.atomic, .completeFileProtection])
+        } catch {
+            print("Error encoding workout to json")
+            return
+        }
+    }
+    
+    func recoverWorkout() -> workout_data {
+        
+        let url = FileManager.default
+            .urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("workoutCache.json")
+        do {
+            let data = try Data(contentsOf: url)
+            return try JSONDecoder().decode(workout_data.self, from: data)
+        } catch {
+            // Return an empty workout_data if loading or decoding fails
+            return workout_data(
+                name: "",
+                date: Date(),
+                exercises: [],
+                notes: nil
+            )
+        }
+    }
 }
+
