@@ -69,7 +69,7 @@ struct edit_workout_view: View {
                 
                 Section {
                     Button(action: { editingWorkout = false }) {
-                        Label("Cancel Workout", systemImage: "minus.circle")
+                        Label("Close Workout", systemImage: "minus.circle")
                     }
                 }
                 // Save button
@@ -89,7 +89,7 @@ struct edit_workout_view: View {
                                         titleVisibility: .visible) {
                         Button("Delete", role: .destructive) {
                             firebaseWorkouts.deleteWorkout(workout)
-                            dismiss()
+                            editingWorkout = false
                         }
                         Button("Cancel", role: .cancel) {}
                     }

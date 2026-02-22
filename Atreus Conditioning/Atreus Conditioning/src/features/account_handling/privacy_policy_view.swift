@@ -27,8 +27,8 @@ struct privacy_policy_view: View {
                 ScrollView {
                     Text(privacyPolicyText)
                 }
-                .onAppear{load_privacy_policy()}
-                .padding(.bottom, 60)
+                .padding([.top, .bottom], 60)
+                .padding([.leading, .trailing], 10)
                 
                 Button("I consent to the privacy policy") {
                     showingPrivacyPolicy = false
@@ -51,6 +51,7 @@ struct privacy_policy_view: View {
                 }
             }
         }
+        .onAppear{load_privacy_policy()}
     }
     
     func load_privacy_policy() {

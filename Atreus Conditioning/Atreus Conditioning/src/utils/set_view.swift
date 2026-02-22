@@ -28,7 +28,9 @@ struct set_view: View {
                         HStack {
                             Button(isRunning ? "Stop Set" : "Start Set") {
                                 if isRunning {
-                                    stop(); currentSet.durationSeconds = elapsedTime
+                                    stop();
+                                    currentSet.durationSeconds = elapsedTime
+                                    
                                 } else {
                                     start()
                                 }
@@ -42,6 +44,12 @@ struct set_view: View {
                             .disabled(isRunning == true)
                         }
                     }
+                    .onAppear{
+                        if currentSet.durationSeconds ?? 0 > 0 {
+                            showStopwatch = false
+                        } else{
+                            showStopwatch = true
+                        }}
                     .padding()
                     
         } else{
@@ -116,6 +124,7 @@ struct set_view: View {
             .padding(.vertical, 4)
         }
     }
+        
     
     func start() {
         startTime = Date()

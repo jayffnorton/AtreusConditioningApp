@@ -65,7 +65,9 @@ struct exercise_view: View {
             
             // --- List of sets ---
             
+            
             ForEach(exercise.sets.indices, id: \.self) { idx in
+                
                 set_view(currentSet: $exercise.sets[idx])
             }
             .onDelete { indices in

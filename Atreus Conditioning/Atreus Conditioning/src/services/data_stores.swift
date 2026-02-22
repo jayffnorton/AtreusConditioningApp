@@ -34,6 +34,13 @@ struct workout_data: Codable, Identifiable {
     var notes: String?
 }
 
+struct workout_data_json: Codable {
+    var name: String
+    var date: Date
+    var exercises: [exercise_data]
+    var notes: String
+}
+
 // MARK: - Extension to calculate totals
 extension workout_data {
     var totalReps: Double {
