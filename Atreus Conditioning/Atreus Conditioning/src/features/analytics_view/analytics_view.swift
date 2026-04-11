@@ -28,7 +28,7 @@ struct analytics_view: View {
     @ObservedObject var firebaseActivities: get_activities
     @State private var trackedMetrics = Set<UUID>() //Set's are like arrays with unique elements, in this case it's a set of UUID's, initially empty
     
-    var selectedActivities: [activity_data] {
+    var selectedActivities: [exercise_definition] {
         return firebaseActivities.activities.filter { trackedMetrics.contains($0.id) }
     }
     
@@ -67,7 +67,7 @@ struct analytics_view: View {
 }
 
 struct SelectedActivityCharts: View {
-    let activities: [activity_data]
+    let activities: [exercise_definition]
     @ObservedObject var firebaseWorkouts: get_workouts
 
     var body: some View {

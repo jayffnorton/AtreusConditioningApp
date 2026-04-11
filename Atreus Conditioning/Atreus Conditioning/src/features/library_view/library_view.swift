@@ -34,7 +34,7 @@ struct library_view: View {
     
     @State private var selectedWorkout: workout_data? = nil
     @State private var selectedTemplate: template_data? = nil
-    @State private var selectedActivity: activity_data? = nil
+    @State private var selectedActivity: exercise_definition? = nil
     
     @State private var editingWorkout = false
     

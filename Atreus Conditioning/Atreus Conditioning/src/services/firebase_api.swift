@@ -96,10 +96,13 @@ class get_activities: ObservableObject {
     Does not own the lifecycle (init, usage, deallocation) of the variable.
     Only used in classes.
     */
-    @Published var activities: [activity_data] = []
+    @Published var activities: [exercise_definition] = []
     
     func fetchActivities() {
-        guard let user = Auth.auth().currentUser else { return }
+        guard let user = Auth.auth().currentUser else {
+            print("No user found")
+            return
+        }
         let db = Firestore.firestore()
         
         db.collection("users")
@@ -111,7 +114,7 @@ class get_activities: ObservableObject {
                     return
                 }
                 self.activities = snapshot?.documents.compactMap { doc in
-                    try? doc.data(as: activity_data.self)
+                    try? doc.data(as: exercise_definition.self)
                 } ?? []
             }
     }

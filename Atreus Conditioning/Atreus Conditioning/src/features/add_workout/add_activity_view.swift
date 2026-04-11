@@ -30,6 +30,7 @@ struct add_activity_view: View {
     @State private var targetedMuscleGroups: [String] = []
     @State private var muscleGroupWeightings: [Int] = []
     @State private var isIso: Bool = false
+    @State private var isUnilateral: Bool = false
     
     let muscleGroupOptions = ["Calfs", "Tibialis", "Quads", "Hamstrings", "Hip Flexors",
                             "Glutes", "Abs", "Obliques", "Chest", "Lower Back", "Lower Traps",
@@ -51,6 +52,7 @@ struct add_activity_view: View {
                     }
                     if (activityClass == "Weightlifting"){
                         Toggle("Isometric", isOn: $isIso)
+                        Toggle("Unilateral", isOn: $isUnilateral)
                     }
                     TextField("Instructions", text: $instructions)
                 }
@@ -106,13 +108,15 @@ struct add_activity_view: View {
             return
         }
 
-        let activity = activity_data(
+        let activity = exercise_definition(
             name: name,
             activityClass: activityClass,
             instructions: instructions,
             targetedMuscleGroups: targetedMuscleGroups,
             muscleGroupWeightings: muscleGroupWeightings,
-            isIso: isIso
+            isIso: isIso,
+            isUnilateral: isUnilateral
+            
         )
 
         let db = Firestore.firestore()

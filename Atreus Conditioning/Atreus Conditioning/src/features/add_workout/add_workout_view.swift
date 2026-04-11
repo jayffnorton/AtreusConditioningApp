@@ -139,7 +139,7 @@ struct add_workout_view: View {
                 name: "",
                 date: Date(),
                 exercises: [],
-                notes: nil
+                notes: ""
             )
         }
         
@@ -147,7 +147,7 @@ struct add_workout_view: View {
             name: name.isEmpty ? "Untitled Workout" : name,
             date: date,
             exercises: filteredExercises,
-            notes: notes.isEmpty ? nil : notes
+            notes: notes
         )
         errorMessage = "Successfully compiled workout."
         print("Successfully compiled workout with name: " + String(compiledWorkout.name))

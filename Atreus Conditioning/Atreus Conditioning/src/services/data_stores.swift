@@ -23,22 +23,47 @@ struct set_data: Identifiable, Codable, Equatable {
 struct exercise_data: Identifiable, Codable, Equatable {
     var id = UUID()
     var exerciseName: String = ""
+    var activityID: UUID?
     var sets: [set_data] = []
 }
 
 struct workout_data: Codable, Identifiable {
     @DocumentID var id: String?
-    var name: String
+    var name: String = ""
     var date: Date
     var exercises: [exercise_data]
-    var notes: String?
+    var notes: String = ""
 }
 
 struct workout_data_json: Codable {
-    var name: String
+    var name: String = ""
     var date: Date
     var exercises: [exercise_data]
-    var notes: String
+    var notes: String = ""
+}
+
+struct template_data: Codable, Identifiable {
+    @DocumentID var id: String?
+    var name: String = ""
+    var date: Date
+    var exercises: [exercise_data]
+    var notes: String = ""
+}
+
+struct activities_list: Codable, Identifiable {
+    @DocumentID var id: String?
+    var activities: [exercise_definition]
+}
+
+struct exercise_definition: Codable, Identifiable {
+    var id = UUID()
+    var name: String = ""
+    var activityClass: String = ""
+    var instructions: String = ""
+    var targetedMuscleGroups: [String]
+    var muscleGroupWeightings: [Int]
+    var isIso: Bool = false
+    var isUnilateral: Bool = false
 }
 
 // MARK: - Extension to calculate totals
@@ -107,28 +132,6 @@ extension Array where Element == workout_data {
     }
 }
 
-struct template_data: Codable, Identifiable {
-    @DocumentID var id: String?
-    var name: String
-    var date: Date
-    var exercises: [exercise_data]
-    var notes: String?
-}
-
-struct activities_list: Codable, Identifiable {
-    @DocumentID var id: String?
-    var activities: [activity_data]
-}
-
-struct activity_data: Codable, Identifiable {
-    var id = UUID()
-    var name: String
-    var activityClass: String
-    var instructions: String
-    var targetedMuscleGroups: [String]
-    var muscleGroupWeightings: [Int]
-    var isIso: Bool
-}
 
 extension workout_data {
     var asJSONSafe: WorkoutJSON {

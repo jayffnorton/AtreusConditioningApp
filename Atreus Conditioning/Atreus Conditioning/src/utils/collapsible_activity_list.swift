@@ -12,7 +12,7 @@ import FirebaseFirestore
 import Charts
 
 struct CollapsibleActivityList: View {
-    let activities: [activity_data]
+    let activities: [exercise_definition]
     @Binding var trackedMetrics: Set<UUID>
     
     @State private var isExpanded = false // tracks collapsed/expanded state

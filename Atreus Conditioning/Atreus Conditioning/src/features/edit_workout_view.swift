@@ -38,7 +38,7 @@ struct edit_workout_view: View {
     func get_params() {
         name = workout.name
         date = workout.date
-        notes = workout.notes ?? ""
+        notes = workout.notes
         exercises = workout.exercises
     }
     var body: some View {
@@ -129,7 +129,7 @@ struct edit_workout_view: View {
             name: name.isEmpty ? "Untitled Workout" : name,
             date: date,
             exercises: filteredExercises,
-            notes: notes.isEmpty ? nil : notes
+            notes: notes
         )
 
         let db = Firestore.firestore()
