@@ -47,7 +47,7 @@ struct root: App {
                     app_tabs().environmentObject(viewModel).environmentObject(loggedInBool)
 
                 } else{
-                    invite_code_view().environmentObject(loggedInBool)
+                    login_or_create_view().environmentObject(loggedInBool)
                 }
             }
         }

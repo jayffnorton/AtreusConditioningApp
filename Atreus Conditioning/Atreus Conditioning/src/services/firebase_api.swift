@@ -27,13 +27,20 @@ class get_workouts: ObservableObject {
             .document(user.uid)
             .collection("workouts")
             .order(by: "date", descending: false)
+            //Attaches a listener who's closure runs when data changes
             .addSnapshotListener { snapshot, error in
                 if let error = error {
                     print("Error fetching workouts: \(error)")
                     return
                 }
                 self.workouts = snapshot?.documents.compactMap { doc in
-                    try? doc.data(as: workout_data.self)
+                    do {
+                        let model = try doc.data(as: workout_data.self)
+                        return model
+                    } catch {
+                        print("Decoding error for doc \(doc.documentID): \(error)") // ERRORS HERE
+                        return nil
+                    }
                 } ?? []
             }
     }
@@ -82,8 +89,15 @@ class get_templates: ObservableObject {
                     print("Error fetching templates: \(error)")
                     return
                 }
+               
                 self.templates = snapshot?.documents.compactMap { doc in
-                    try? doc.data(as: template_data.self)
+                    do {
+                        let model = try doc.data(as: template_data.self)
+                        return model
+                    } catch {
+                        print("Decoding error for doc \(doc.documentID): \(error)")
+                        return nil
+                    }
                 } ?? []
             }
     }

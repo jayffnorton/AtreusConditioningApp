@@ -10,6 +10,10 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import Charts
+/*
+ Codable lets Swift automatically encode/decode your types to/from external representations (like Firestore/JSON).
+ By default, Swift will synthesize this behavior if your properties map 1:1 to keys and types in the data.
+*/
 
 struct set_data: Identifiable, Codable, Equatable {
     var id = UUID()
@@ -25,6 +29,7 @@ struct exercise_data: Identifiable, Codable, Equatable {
     var exerciseName: String = ""
     var activityID: UUID?
     var sets: [set_data] = []
+
 }
 
 struct workout_data: Codable, Identifiable {
@@ -33,6 +38,58 @@ struct workout_data: Codable, Identifiable {
     var date: Date
     var exercises: [exercise_data]
     var notes: String = ""
+    
+    
+    enum CodingKeys: String, CodingKey {
+        /*
+         CodingKeys defines the mapping between my properties and external keys.
+         Each case corrresponds to a property I want to encode/decode. In this case,
+         extrinsic names (in firebase) are the same as my intrinsice names. If the
+         extrinsic names were different, could define like "case name = "workout_name".
+         */
+        case id
+        case name
+        case date
+        case exercises
+        case notes
+    }
+
+    init(from decoder: Decoder) throws {
+        /*
+         Custom initialiser which can provide default keys, convert mis-matched types,
+         decode nested structures and keep properties non-optional.
+         */
+        
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+
+        // DocumentID is typically filled by Firestore; should be safe to decode
+        self.id = try c.decodeIfPresent(String.self, forKey: .id)
+
+        // Required fields — throw if missing/wrong type
+        self.name = try c.decodeIfPresent(String.self, forKey: .name) ?? "" // or `try c.decode(String.self, forKey: .name)` if truly required
+        
+        self.date = try c.decode(Date.self, forKey: .date)
+        self.exercises = try c.decode([exercise_data].self, forKey: .exercises)
+
+        // Optional-with-default — if the key is missing/null, use ""
+        self.notes = try c.decodeIfPresent(String.self, forKey: .notes) ?? ""
+    }
+}
+
+extension workout_data {
+    init(
+        id: String? = nil,
+        name: String = "",
+        date: Date,
+        exercises: [exercise_data],
+        notes: String = ""
+    ) {
+        self.id = id
+        self.name = name
+        self.date = date
+        self.exercises = exercises
+        self.notes = notes
+    }
 }
 
 struct workout_data_json: Codable {
